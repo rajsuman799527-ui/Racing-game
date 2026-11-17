@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#07080d"><title>APEX RUSH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+</head><body>
+<div id="game">
+<canvas id="stage3d" width="1280" height="720"></canvas><div id="tags"></div>
+
+<section id="s-boot" class="screen on"><div class="center"><div class="logo big">APEX<b>RUSH</b></div><div class="bar"><i id="bootBar"></i></div><p id="bootTxt">LOADING GARAGE</p></div></section>
+
+<section id="s-login" class="screen">
+ <div class="hero"><div class="logo big">APEX<b>RUSH</b></div><p class="tag2">DOST KE SATH RACE. LOBBY BANAO. JEETO.</p></div>
+ <div class="card login">
+  <div id="joinBanner" class="join hide">JOINING LOBBY <b id="joinCode"></b></div>
+  <label>RACER NAME</label>
+  <input id="nameIn" maxlength="14" placeholder="Apna naam likho" autocomplete="off">
+  <button class="btn gold big" id="goBtn"><span>START ENGINE</span></button>
+  <small>Sirf naam chahiye. Account apne aap ban jayega.</small>
+ </div>
+</section>
+
+<section id="s-home" class="screen">
+ <header class="top">
+  <div class="prof"><div class="av" id="av">R</div><div><b id="pName">RACER</b><span>UID <u id="pUid">00000000</u> <button id="copyUid" class="mini">COPY</button></span></div></div>
+  <div class="topr"><button class="ico" id="btnFriends">FRIENDS<em id="frBadge" class="hide">0</em></button><button class="ico" id="btnScan">SCAN QR</button></div>
+ </header>
+ <nav class="menu">
+  <button class="mbtn gold" id="mRace"><span>QUICK RACE</span><small>Solo vs bots</small></button>
+  <button class="mbtn" id="mLobby"><span>PARTY LOBBY</span><small>Friends ke sath</small></button>
+  <button class="mbtn" id="mGarage"><span>GARAGE</span><small>Car chuno</small></button>
+ </nav>
+ <aside class="carInfo"><small>SELECTED CAR</small><h2 id="hCarName"></h2><div class="stats" id="hStats"></div></aside>
+ <p class="hint">DRAG KARKE CAR GHUMAO</p>
+</section>
+
+<section id="s-garage" class="screen">
+ <button class="back" id="gBack">‹ BACK</button>
+ <button class="arrow l" id="gPrev">‹</button><button class="arrow r" id="gNext">›</button>
+ <aside class="carInfo big"><small id="gIdx">1 / 4</small><h2 id="gName"></h2><div class="stats" id="gStats"></div><button class="btn gold big" id="gSelect"><span>SELECT</span></button></aside>
+</section>
+
+<section id="s-lobby" class="screen">
+ <button class="back" id="lobbyLeave">‹ LEAVE</button>
+ <div class="lobTitle"><small>PARTY LOBBY</small><h2>CODE <b id="lCode"></b></h2></div>
+ <aside class="panel players"><h3>RACERS <em id="lCount"></em></h3><ul id="lList"></ul></aside>
+ <aside class="panel invite"><div id="qrBox"></div><small>SCAN KARKE JOIN KARO</small>
+  <button class="btn" id="lInvite"><span>INVITE FRIENDS</span></button>
+  <button class="btn" id="lCopy"><span>COPY LINK</span></button>
+  <button class="btn" id="lCar"><span>CHANGE CAR</span></button></aside>
+ <footer class="lobBar"><button class="btn big" id="lReady"><span>READY</span></button><button class="btn gold big hide" id="lStart"><span>START RACE</span></button></footer>
+</section>
+
+<section id="s-race" class="screen">
+ <div id="raceView"></div>
+ <div class="hud">
+  <div id="hBoostFx"></div>
+  <div class="hPos"><small>POS</small><b id="hPos">1<small>/6</small></b></div>
+  <div class="hMid"><div><small>LAP</small><b id="hLap">1/3</b></div><div><small>TIME</small><b id="hTime">0:00.00</b></div></div>
+  <canvas id="mini" width="220" height="160"></canvas>
+  <div class="hSpd"><b id="hSpeed">0</b><small>KM/H</small><div class="nbar"><i id="hNitro"></i></div></div>
+  <div id="countdown"></div><div id="lapFlash"></div>
+ </div>
+ <div class="touchUI"><div class="tl"><button class="tbtn" data-k="left">‹</button><button class="tbtn" data-k="right">›</button></div>
+  <div class="tr"><button class="tbtn nitro" data-k="nitro">N</button><button class="tbtn" data-k="brake">B</button></div></div>
+ <div id="raceLoad" class="center hide"><div class="logo">LOADING TRACK</div><div class="bar"><i id="raceBar"></i></div></div>
+</section>
+
+<section id="s-result" class="screen"><div class="card wide res"><h3>RESULTS</h3><table id="resTb"></table><button class="btn gold big" id="resBack"><span>CONTINUE</span></button></div></section>
+
+<div id="mFriends" class="modal"><div class="card wide"><button class="x" data-close>✕</button><h3>FRIENDS</h3>
+ <div class="row"><input id="addUid" inputmode="numeric" placeholder="Friend ka UID dalo"><button class="btn gold sm" id="addBtn"><span>ADD</span></button></div>
+ <div id="frReq"></div><ul id="frList"></ul></div></div>
+<div id="mScan" class="modal"><div class="card"><button class="x" data-close>✕</button><h3>SCAN LOBBY QR</h3><video id="scanVid" playsinline muted></video><canvas id="scanCv" class="hide"></canvas><small id="scanNote">QR camera ke samne rakho</small>
+ <div class="row"><input id="scanCode" maxlength="6" placeholder="Ya 6-letter code"><button class="btn gold sm" id="scanGo"><span>JOIN</span></button></div></div></div>
+<div id="invBox" class="hide"><b id="invTxt"></b><button class="btn gold sm" id="invYes"><span>JOIN</span></button><button class="btn sm" id="invNo"><span>✕</span></button></div>
+<div id="toast"></div>
+</div>
+<div id="rotate"><div class="logo">PHONE KO LANDSCAPE KARO ↻</div></div>
+<script type="module" src="js/app.js"></script>
+</body></html>
