@@ -1,0 +1,14 @@
+name = "apex-rush-api"
+main = "index.js"
+compatibility_date = "2025-01-01"
+
+[[kv_namespaces]]
+binding = "USERS"
+id = "PASTE_KV_NAMESPACE_ID_HERE"
+
+[durable_objects]
+bindings = [{ name = "LOBBY", class_name = "Lobby" }]
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Lobby"]
